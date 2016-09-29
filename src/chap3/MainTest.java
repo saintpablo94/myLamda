@@ -19,7 +19,7 @@ public class MainTest {
 		prettyPrintApple(inventory, new AppleBasicFormatter());
 		prettyPrintApple(inventory, new AppleFancyFormatter());
 		
-		List<Apple> readApples = filterApple(inventory, new ApplePredicate() {
+		List<Apple> redApples = filterApple(inventory, new ApplePredicate(){
 			
 			@Override
 			public boolean test(Apple apple) {
@@ -27,8 +27,18 @@ public class MainTest {
 			}
 		});
 		
-		System.out.println(readApples);
-			
+		System.out.println(redApples);
+		
+		List<Apple> redApples2 = filterApple(inventory, new ApplePredicate() {
+			public boolean test(Apple apple) {
+				return "red".equals(apple.getColor());
+			}
+		});
+		
+		System.out.println(redApples2);
+		
+		List<Apple> blueApples = filter(inventory, (Apple apple) -> "blue".equals(apple.getColor()));
+		System.out.println(blueApples);	
 	}
 	
 	public static void prettyPrintApple(List<Apple> inventory, AppleFormatter p ){
@@ -36,6 +46,16 @@ public class MainTest {
 			String output = p.accept(apple);
 			System.out.println(output);
 		}
+	}
+	
+	public static <T>List<T> filter(List<T> list, Predicate<T> p){
+		List<T> result = new ArrayList<>();
+		for(T e : list){
+			if(p.test(e)){
+				result.add(e);
+			}
+		}
+		return result;
 	}
 	
 	public static List<Apple> filterApple(List<Apple> inventory, ApplePredicate p){
